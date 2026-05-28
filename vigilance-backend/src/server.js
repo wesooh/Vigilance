@@ -21,6 +21,7 @@ import trainingRoutes from "./routes/trainingRoutes.js";
 import contractRoutes from "./routes/contractRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import locationRoutes from "./routes/locationRoutes.js";
+import chatRoutes from "./routes/chatRoutes.js";
 
 dotenv.config();
 
@@ -47,7 +48,7 @@ app.use("/trainings", trainingRoutes);
 app.use("/contracts", contractRoutes);
 app.use("/admin/dashboard", dashboardRoutes);
 app.use("/locations", locationRoutes);
-
+app.use("/chat", chatRoutes);
 app.get("/", (req, res) => {
   res.send("Vigilance API is running...");
 });

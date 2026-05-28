@@ -1,83 +1,71 @@
 import { useEffect, useState } from "react";
 
 import MainLayout from "../../layouts/MainLayout";
-import socket from "../../sockets/socket";
+import api from "../../api/axios";
 
 export default function Chat() {
-  const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [text, setText] = useState("");
+
+  // TEMP TEST USER
+  // later comes from selected worker/client
+  const receiverId =
+    "PASTE_REAL_USER_ID_HERE";
 
   useEffect(() => {
-    socket.on("receiveMessage", (data) => {
-      setMessages((prev) => [...prev, data]);
-    });
-
-    return () => {
-      socket.off("receiveMessage");
-    };
+    fetchMessages();
   }, []);
 
-  const sendMessage = () => {
-    if (!message) return;
+  const fetchMessages = async () => {
+    try {
+      const res = await api.get(
+        `/chat/${receiverId}`
+      );
 
-    const msgData = {
-      text: message,
-      sender: localStorage.getItem("role"),
-      time: new Date().toLocaleTimeString(),
-    };
+      setMessages(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-    socket.emit("sendMessage", msgData);
+  const sendMessage = async () => {
+    try {
+      await api.post("/chat", {
+        receiver: receiverId,
+        text,
+      });
 
-    setMessages((prev) => [...prev, msgData]);
+      setText("");
 
-    setMessage("");
+      fetchMessages();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
     <MainLayout>
       <h2>Messages</h2>
 
-      {/* CHAT AREA */}
       <div style={styles.chatBox}>
-        {messages.map((msg, index) => (
+        {messages.map((msg) => (
           <div
-            key={index}
+            key={msg._id}
             style={{
               ...styles.message,
-
-              alignSelf:
-                msg.sender ===
-                localStorage.getItem("role")
-                  ? "flex-end"
-                  : "flex-start",
-
-              background:
-                msg.sender ===
-                localStorage.getItem("role")
-                  ? "#4CA621"
-                  : "#FFFFFF",
-
-              color:
-                msg.sender ===
-                localStorage.getItem("role")
-                  ? "white"
-                  : "black",
             }}
           >
             <p>{msg.text}</p>
-
-            <small>{msg.time}</small>
           </div>
         ))}
       </div>
 
-      {/* INPUT */}
       <div style={styles.inputArea}>
         <input
           style={styles.input}
-          value={message}
+          value={text}
           onChange={(e) =>
-            setMessage(e.target.value)
+            setText(e.target.value)
           }
           placeholder="Type message..."
         />
@@ -100,21 +88,19 @@ const styles = {
     padding: "20px",
     borderRadius: "12px",
     overflowY: "auto",
-    display: "flex",
-    flexDirection: "column",
   },
 
   message: {
-    maxWidth: "70%",
+    background: "#FFFFFF",
     padding: "10px",
-    borderRadius: "12px",
+    borderRadius: "10px",
     marginBottom: "10px",
   },
 
   inputArea: {
     display: "flex",
-    marginTop: "10px",
     gap: "10px",
+    marginTop: "10px",
   },
 
   input: {
@@ -130,6 +116,5 @@ const styles = {
     border: "none",
     padding: "12px 18px",
     borderRadius: "8px",
-    cursor: "pointer",
   },
 };
