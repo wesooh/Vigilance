@@ -44,4 +44,19 @@ router.put("/reject/:id", protect, adminOnly, async (req, res) => {
   }
 });
 
+
+router.get("/all", protect, async (req, res) => {
+  try {
+    const users = await User.find({
+      _id: { $ne: req.user.id }, // exclude self
+    }).select("-password");
+
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
 export default router;
