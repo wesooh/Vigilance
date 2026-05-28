@@ -3,11 +3,13 @@ import api from "../../api/axios";
 import MainLayout from "../../layouts/MainLayout";
 import Card from "../../components/Card";
 import Button from "../../components/Button";
+import Loader from "../../components/Loader";
 
 export default function Dashboard() {
   const [bookings, setBookings] = useState([]);
   const [isOnline, setIsOnline] = useState(false);
   const [earnings, setEarnings] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchWorkerProfile();

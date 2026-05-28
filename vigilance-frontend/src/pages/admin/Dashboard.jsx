@@ -4,6 +4,7 @@ import MainLayout from "../../layouts/MainLayout";
 import Card from "../../components/Card";
 import StatsCard from "../../components/StatsCard";
 import Button from "../../components/Button";
+import Loader from "../../components/Loader";
 
 export default function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -24,16 +25,19 @@ export default function Dashboard() {
     }
   };
 
-  const fetchWorkers = async () => {
-    try {
-      const res = await api.get("/users/workers/pending");
-      setWorkers(res.data);
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-      setLoading(false);
-    }
-  };
+const fetchWorkers = async () => {
+  try {
+    const res = await api.get(
+      "/availability/online-workers"
+    );
+
+    setWorkers(res.data);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const approveWorker = async (id) => {
     try {
@@ -55,7 +59,7 @@ export default function Dashboard() {
     }
   };
 
-  if (loading) return <h2>Loading admin panel...</h2>;
+  if (loading) return <Loader />;
 
   return (
     <MainLayout>

@@ -3,6 +3,7 @@ import api from "../../api/axios";
 import MainLayout from "../../layouts/MainLayout";
 import Card from "../../components/Card";
 import Button from "../../components/Button";
+import Loader from "../../components/Loader";
 
 export default function Dashboard() {
   const [workers, setWorkers] = useState([]);
@@ -13,18 +14,18 @@ export default function Dashboard() {
   }, []);
 
   const fetchWorkers = async () => {
-    try {
-      const res = await api.get(
-        "/availability/online-workers"
-      );
+  try {
+    const res = await api.get(
+      "/availability/online-workers"
+    );
 
-      setWorkers(res.data);
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-      setLoading(false);
-    }
-  };
+    setWorkers(res.data);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleBook = async (workerId) => {
     try {
@@ -42,7 +43,7 @@ export default function Dashboard() {
     }
   };
 
-  if (loading) return <h2>Loading workers...</h2>;
+  if (loading) return <Loader />;
   if (!workers.length) return <h3>No workers available</h3>;
 
   return (
