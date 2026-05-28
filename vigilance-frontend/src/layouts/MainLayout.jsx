@@ -1,8 +1,64 @@
 import { useState } from "react";
 import { colors } from "../styles/colors";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 export default function MainLayout({ children }) {
   const [open, setOpen] = useState(false);
+
+  const location = useLocation();
+const navigate = useNavigate();
+
+const { logout } = useContext(AuthContext);
+
+const menus = {
+  client: [
+    {
+      name: "Dashboard",
+      path: "/client",
+    },
+    {
+      name: "Messages",
+      path: "/client/messages",
+    },
+    {
+      name: "Bookings",
+      path: "/client/bookings",
+    },
+  ],
+
+  worker: [
+    {
+      name: "Dashboard",
+      path: "/worker",
+    },
+    {
+      name: "Jobs",
+      path: "/worker/jobs",
+    },
+    {
+      name: "Earnings",
+      path: "/worker/earnings",
+    },
+  ],
+
+  admin: [
+    {
+      name: "Dashboard",
+      path: "/admin",
+    },
+    {
+      name: "Workers",
+      path: "/admin/workers",
+    },
+    {
+      name: "Analytics",
+      path: "/admin/analytics",
+    },
+  ],
+};
+
+const role = localStorage.getItem("role");
 
   return (
     <div style={styles.container}>
@@ -33,12 +89,39 @@ export default function MainLayout({ children }) {
         </h2>
 
         <nav>
-          <p style={styles.link}>Dashboard</p>
-          <p style={styles.link}>Workers</p>
-          <p style={styles.link}>Bookings</p>
-          <p style={styles.link}>Messages</p>
-          <p style={styles.link}>Settings</p>
-        </nav>
+  {menus[role]?.map((item) => (
+    <Link
+      key={item.path}
+      to={item.path}
+      style={{
+        textDecoration: "none",
+      }}
+    >
+      <p
+        style={{
+          ...styles.link,
+
+          background:
+            location.pathname === item.path
+              ? "#16437E"
+              : "transparent",
+        }}
+      >
+        {item.name}
+      </p>
+    </Link>
+  ))}
+
+  <button
+    style={styles.logoutButton}
+    onClick={() => {
+      logout();
+      navigate("/");
+    }}
+  >
+    Logout
+  </button>
+</nav>
       </div>
 
       {/* CONTENT */}
@@ -94,8 +177,10 @@ const styles = {
   },
 
   link: {
-    color: "#FFFFFF",
-    margin: "14px 0",
-    cursor: "pointer",
-  },
+  color: "#FFFFFF",
+  margin: "10px 0",
+  cursor: "pointer",
+  padding: "10px",
+  borderRadius: "8px",
+},
 };

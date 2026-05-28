@@ -19,5 +19,16 @@ const styles = {
     width: "100%",
     maxWidth: "200px",
   },
+  
+  logoutButton: {
+  marginTop: "20px",
+  background: "#4CA621",
+  color: "white",
+  border: "none",
+  padding: "10px",
+  borderRadius: "8px",
+  cursor: "pointer",
+  width: "100%",
+},
 };
 

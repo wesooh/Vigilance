@@ -7,3 +7,4 @@ export const colors = {
   background: "#D2D7DF",
   white: "#FFFFFF",
 };
+
