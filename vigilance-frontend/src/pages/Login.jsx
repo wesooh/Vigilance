@@ -2,10 +2,12 @@ import { useState, useContext } from "react";
 import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import useToast from "../hooks/useToast";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { showToast, ToastComponent } = useToast();
 
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -27,13 +29,14 @@ export default function Login() {
       else if (role === "worker") navigate("/worker");
       else navigate("/admin");
     } catch (err) {
-      alert(err.response?.data?.message);
+      showToast(err.response?.data?.message, "error");
     }
   };
 
   return (
     <div style={{ padding: 20 }}>
       <h2>Login</h2>
+      {ToastComponent}
 
       <form onSubmit={handleLogin}>
         <input
