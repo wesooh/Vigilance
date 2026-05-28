@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
 import MainLayout from "../../layouts/MainLayout";
+import Card from "../../components/Card";
+import Button from "../../components/Button";
 
 export default function Dashboard() {
   const [bookings, setBookings] = useState([]);
@@ -92,30 +94,25 @@ export default function Dashboard() {
         <p>No bookings yet</p>
       ) : (
         bookings.map((b) => (
-          <div
-            key={b._id}
-            style={{
-              border: "1px solid #ccc",
-              padding: 10,
-              marginBottom: 10,
-              borderRadius: 8,
-            }}
-          >
-            <p>Client: {b.client?.firstName}</p>
-            <p>Amount: {b.amount}</p>
-            <p>Status: {b.status}</p>
+          <Card key={b._id}>
+  <p>Client: {b.client?.firstName}</p>
 
-            <button onClick={() => acceptBooking(b._id)}>
-              Accept
-            </button>
+  <p>Amount: {b.amount}</p>
 
-            <button
-              onClick={() => rejectBooking(b._id)}
-             
-            >
-              Reject
-            </button>
-          </div>
+  <p>Status: {b.status}</p>
+
+  <Button onClick={() => acceptBooking(b._id)}>
+    Accept
+  </Button>
+
+  <span style={{ marginLeft: 10 }}>
+    <Button
+      onClick={() => rejectBooking(b._id)}
+    >
+      Reject
+    </Button>
+  </span>
+</Card>
         ))
       )}
     </div>

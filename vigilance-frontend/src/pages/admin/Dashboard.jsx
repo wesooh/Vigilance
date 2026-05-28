@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
 import MainLayout from "../../layouts/MainLayout";
+import Card from "../../components/Card";
+import StatsCard from "../../components/StatsCard";
+import Button from "../../components/Button";
 
 export default function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -62,31 +65,54 @@ export default function Dashboard() {
       {/* STATS */}
       {stats && (
         <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 10,
-            marginBottom: 20,
-          }}
-        >
-          <div>Clients: {stats.users.clients}</div>
-          <div>Workers: {stats.users.workers}</div>
-          <div>
-            Pending Workers: {stats.users.pendingWorkers}
-          </div>
+  style={{
+    display: "grid",
+    gridTemplateColumns:
+      "repeat(auto-fit, minmax(220px, 1fr))",
+    gap: "16px",
+    marginBottom: "20px",
+  }}
+>
+  <StatsCard
+    title="Clients"
+    value={stats.users.clients}
+  />
 
-          <div>Bookings: {stats.bookings}</div>
-          <div>Contracts: {stats.contracts}</div>
-          <div>Training: {stats.training}</div>
+  <StatsCard
+    title="Workers"
+    value={stats.users.workers}
+  />
 
-          <div>
-            Total Revenue: {stats.revenue.totalRevenue}
-          </div>
+  <StatsCard
+    title="Pending Workers"
+    value={stats.users.pendingWorkers}
+  />
 
-          <div>
-            Company Revenue: {stats.revenue.companyRevenue}
-          </div>
-        </div>
+  <StatsCard
+    title="Bookings"
+    value={stats.bookings}
+  />
+
+  <StatsCard
+    title="Contracts"
+    value={stats.contracts}
+  />
+
+  <StatsCard
+    title="Training"
+    value={stats.training}
+  />
+
+  <StatsCard
+    title="Total Revenue"
+    value={`KES ${stats.revenue.totalRevenue}`}
+  />
+
+  <StatsCard
+    title="Company Revenue"
+    value={`KES ${stats.revenue.companyRevenue}`}
+  />
+</div>
       )}
 
       {/* WORKER APPROVAL */}
@@ -96,31 +122,23 @@ export default function Dashboard() {
         <p>No pending workers</p>
       ) : (
         workers.map((w) => (
-          <div
-            key={w._id}
-            style={{
-              border: "1px solid #ccc",
-              padding: 10,
-              marginBottom: 10,
-            }}
-          >
+          <Card key={w._id}>
             <p>
               {w.firstName} {w.lastName}
             </p>
 
             <p>{w.email}</p>
 
-            <button onClick={() => approveWorker(w._id)}>
+            <Button onClick={() => approveWorker(w._id)}>
               Approve
-            </button>
+            </Button>
 
-            <button
-              onClick={() => rejectWorker(w._id)}
-              
-            >
-              Reject
-            </button>
-          </div>
+            <span style={{ marginLeft: 10 }}>
+              <Button onClick={() => rejectWorker(w._id)}>
+                Reject
+              </Button>
+            </span>
+          </Card>
         ))
       )}
     </div>

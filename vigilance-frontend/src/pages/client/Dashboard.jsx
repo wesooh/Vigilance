@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
 import MainLayout from "../../layouts/MainLayout";
+import Card from "../../components/Card";
+import Button from "../../components/Button";
 
 export default function Dashboard() {
   const [workers, setWorkers] = useState([]);
@@ -58,14 +60,7 @@ export default function Dashboard() {
         }}
       >
         {workers.map((worker) => (
-          <div
-            key={worker._id}
-            style={{
-              border: "1px solid #ccc",
-              padding: 10,
-              borderRadius: 8,
-            }}
-          >
+          <Card key={worker._id}>
             <h4>
               {worker.firstName} {worker.lastName}
             </h4>
@@ -73,16 +68,14 @@ export default function Dashboard() {
             <p>Category: {worker.category || "General"}</p>
 
             <p>
-              Status:{" "}
+              Status:{" "} 
               {worker.isOnline ? "🟢 Online" : "🔴 Offline"}
             </p>
 
-            <button
-              onClick={() => handleBook(worker._id)}
-            >
+            <Button onClick={() => handleBook(worker._id)}>
               Hire Worker
-            </button>
-          </div>
+            </Button>
+          </Card>
         ))}
       </div>
     </MainLayout>
