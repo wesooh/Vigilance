@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
+import MainLayout from "../../layouts/MainLayout";
 
 export default function Dashboard() {
   const [bookings, setBookings] = useState([]);
@@ -7,9 +8,19 @@ export default function Dashboard() {
   const [earnings, setEarnings] = useState(0);
 
   useEffect(() => {
+    fetchWorkerProfile();
     fetchBookings();
     fetchEarnings();
   }, []);
+
+  const fetchWorkerProfile = async () => {
+    try {
+      const res = await api.get("/user/profile"); // Change this to your exact profile route
+      setIsOnline(res.data.isOnline);
+    } catch (err) {
+      console.log("Error fetching profile status:", err);
+    }
+  };
 
   const fetchBookings = async () => {
     try {
@@ -57,6 +68,7 @@ export default function Dashboard() {
   };
 
   return (
+    <MainLayout>
     <div style={{ padding: 20 }}>
       <h2>Worker Dashboard</h2>
 
@@ -107,5 +119,6 @@ export default function Dashboard() {
         ))
       )}
     </div>
+    </MainLayout>
   );
 }

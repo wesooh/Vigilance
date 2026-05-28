@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
+import MainLayout from "../../layouts/MainLayout";
 
 export default function Dashboard() {
   const [workers, setWorkers] = useState([]);
@@ -40,11 +41,10 @@ export default function Dashboard() {
   };
 
   if (loading) return <h2>Loading workers...</h2>;
-  if (!workers.length)
-  return <h3>No workers available</h3>;
+  if (!workers.length) return <h3>No workers available</h3>;
 
   return (
-    <div style={{ padding: 20 }}>
+    <MainLayout>
       <h2>Client Dashboard</h2>
 
       <h3>Available Workers</h3>
@@ -85,6 +85,6 @@ export default function Dashboard() {
           </div>
         ))}
       </div>
-    </div>
+    </MainLayout>
   );
 }

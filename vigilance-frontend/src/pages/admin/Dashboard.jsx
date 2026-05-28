@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
+import MainLayout from "../../layouts/MainLayout";
 
 export default function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -54,8 +55,9 @@ export default function Dashboard() {
   if (loading) return <h2>Loading admin panel...</h2>;
 
   return (
-    <div style={{ padding: 20 }}>
-      <h2>Admin Dashboard</h2>
+    <MainLayout>
+      <div style={{ padding: 20 }}>
+        <h2>Admin Dashboard</h2>
 
       {/* STATS */}
       {stats && (
@@ -122,5 +124,6 @@ export default function Dashboard() {
         ))
       )}
     </div>
+    </MainLayout>
   );
 }
