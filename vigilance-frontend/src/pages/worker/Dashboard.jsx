@@ -111,7 +111,7 @@ export default function Dashboard() {
 
             <button
               onClick={() => rejectBooking(b._id)}
-              style={{ marginLeft: 10 }}
+             
             >
               Reject
             </button>

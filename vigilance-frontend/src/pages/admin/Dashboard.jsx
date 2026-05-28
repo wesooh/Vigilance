@@ -116,7 +116,7 @@ export default function Dashboard() {
 
             <button
               onClick={() => rejectWorker(w._id)}
-              style={{ marginLeft: 10 }}
+              
             >
               Reject
             </button>
